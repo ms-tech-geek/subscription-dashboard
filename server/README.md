@@ -13,7 +13,7 @@ This is the server-side application for the Subscription Dashboard project, buil
 
 1. Clone the repository:
 
-   git clone https://github.com/yourusername/subscription-dashboard.git
+   git clone https://github.com/ms-tech-geek/subscription-dashboard.git
 
 2. Navigate to the server directory:
 
