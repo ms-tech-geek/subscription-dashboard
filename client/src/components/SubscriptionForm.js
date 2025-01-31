@@ -9,27 +9,37 @@ const SubscriptionForm = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const stripe = await stripePromise;
+        try {
+            const stripe = await stripePromise;
 
-        const response = await fetch('/api/subscribe', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email, plan }),
-        });
+            const response = await fetch('/api/subscribe', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, plan }),
+            });
 
-        const sessionId = await response.json();
-        const result = await stripe.redirectToCheckout({ sessionId });
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
 
-        if (result.error) {
-            console.error(result.error.message);
+            const session = await response.json();
+
+            const result = await stripe.redirectToCheckout({
+                sessionId: session.id,
+            });
+
+            if (result.error) {
+                console.error(result.error.message);
+            }
+        } catch (error) {
+            console.error('Error:', error);
         }
     };
 
     return (
         <form onSubmit={handleSubmit}>
-            <h2>Subscribe to our service</h2>
             <label>
                 Email:
                 <input
