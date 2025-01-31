@@ -43,13 +43,3 @@ Make sure to set the following environment variables in a `.env` file:
 
 - `STRIPE_SECRET_KEY`: Your Stripe secret key.
 - `PORT`: (Optional) The port on which the server will run.
-
-### Testing
-
-To run tests, use the following command:
-
-npm test
-
-### License
-
-This project is licensed under the MIT License. See the LICENSE file for details.
