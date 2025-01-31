@@ -12,7 +12,7 @@ const SubscriptionForm = () => {
         try {
             const stripe = await stripePromise;
 
-            const response = await fetch('/api/subscriptions/create-subscription', {
+            const response = await fetch('http://localhost:8080/api/subscriptions/create-subscription', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

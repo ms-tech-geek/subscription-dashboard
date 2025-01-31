@@ -1,17 +1,37 @@
+const stripe = require('stripe')('YOUR_STRIPE_SECRET_KEY');
+
 class SubscriptionController {
     async createSubscription(req, res) {
-        // Logic to create a subscription using Stripe API
         try {
-            const { email, paymentMethodId } = req.body;
-            // Create a customer and subscription in Stripe
-            // Respond with subscription details
+            const { email, plan } = req.body;
+
+            const customer = await stripe.customers.create({
+                email,
+            });
+
+            const priceId = plan === 'basic' ? 'price_basic' : 'price_premium';
+
+            const session = await stripe.checkout.sessions.create({
+                payment_method_types: ['card'],
+                customer: customer.id,
+                line_items: [
+                    {
+                        price: priceId,
+                        quantity: 1,
+                    },
+                ],
+                mode: 'subscription',
+                success_url: 'http://localhost:3000/success',
+                cancel_url: 'http://localhost:3000/cancel',
+            });
+
+            res.json({ id: session.id });
         } catch (error) {
             res.status(500).json({ error: error.message });
         }
     }
 
     async handleWebhook(req, res) {
-        // Logic to handle Stripe webhooks
         try {
             const event = req.body;
             // Process the event (e.g., subscription updates)
@@ -22,4 +42,4 @@ class SubscriptionController {
     }
 }
 
-export default new SubscriptionController();
+module.exports = SubscriptionController;
