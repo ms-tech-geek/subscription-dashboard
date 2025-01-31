@@ -5,11 +5,10 @@ const subscriptionRoutes = require('./routes/subscriptionRoutes');
 
 const app = express();
 
-// Enable CORS for all routes
 app.use(cors({
-    origin: 'http://localhost:3000', // Allow requests from this origin
+    origin: 'http://localhost:3000',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true, // Allow cookies to be sent
+    credentials: true,
 }));
 
 app.use(bodyParser.json());
